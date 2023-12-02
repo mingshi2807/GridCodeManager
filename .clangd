@@ -1,0 +1,13 @@
+CompileFlags:                     # Tweak the parse settings
+  Add: [-xc++, -std=c++17, -Wall, -Wpedantic, -Wextra, -Wconversion, -Wno-missing-prototypes, -I/home/Ming/dev_local/include/boost]             # treat all files as C++, enable more warnings
+  Remove: -W*                     # strip all other warning-related flags
+  Compiler: clang++               # Change argv[0] of compile flags to `clang++`
+
+Diagnostics:
+  # Tweak Clang-Tidy checks.
+  ClangTidy:
+    Add: [performance-*, modernize-*, readability-*, bugprone-*, cppcoreguidelines-*, google-*, clang-analyzer-*, concurrency-*, llvm-*]
+    Remove: [modernize-use-trailing-return-type]
+    #CheckOptions:
+    #readability-identifier-naming.VariableCase: CamelCase
+   

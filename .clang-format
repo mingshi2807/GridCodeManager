@@ -1,0 +1,70 @@
+# Debian clang-format version 14.0.0-++20220226043059+f8ca5fabdb54-1~exp1~20220226043150.77
+#
+# Repositories
+# - Debian/ubuntu: https://apt.llvm.org/
+#
+# Documentation: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+#
+# v14 options:
+# - PackConstructorInitializers
+# - SeparateDefinitionBlocks
+# v15 options:
+# - IndentRequiresClause
+# - InsertBraces
+# - RequiresClausePosition
+# v16 options:
+# - BreakArrays
+# - RequiresExpressionIndentation
+#
+# Meson/Ninja Target: https://mesonbuild.com/Code-formatting.html
+---
+Language: Cpp
+BasedOnStyle:  LLVM
+
+AlignAfterOpenBracket: AlwaysBreak
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveBitFields: Consecutive
+AlwaysBreakAfterReturnType: All
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+BraceWrapping:
+  AfterCaseLabel:  false
+  AfterClass:      true
+  AfterControlStatement: Never
+  AfterEnum:       true
+  AfterFunction:   true
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     true
+  AfterUnion:      true
+  AfterExternBlock: true
+  BeforeCatch:     true
+  BeforeElse:      true
+  BeforeLambdaBody: true
+  BeforeWhile:     true
+  IndentBraces:    false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakBeforeBraces: Custom
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+EmptyLineAfterAccessModifier: Always
+EmptyLineBeforeAccessModifier: Always
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '<boost/'
+    Priority:        2
+  - Regex:           '<(gtest|gmock|GUnit)/'
+    Priority:        3
+  - Regex:           '<[[:alnum:]._]+>'
+    Priority:        4
+  - Regex:           '.*'
+    Priority:        1
+IndentCaseLabels: true
+MaxEmptyLinesToKeep: 2
+PackConstructorInitializers: Never
+PointerAlignment: Middle
+SeparateDefinitionBlocks: Always
+...
