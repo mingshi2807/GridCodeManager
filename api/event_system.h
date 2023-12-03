@@ -60,13 +60,13 @@ public:
       std::string_view event_type,
       const std::function<void(const EnergyService &)> & function)
   {
-    subscribers_[event_type.data()].push_back(function);
+    m_subscribers[event_type.data()].push_back(function);
   }
 
   void
   PostEvent(std::string_view event_type, const EnergyService & energyService)
   {
-    for (const auto & callable : subscribers_[event_type.data()]) {
+    for (const auto & callable : m_subscribers[event_type.data()]) {
       callable(energyService);
     }
   }
@@ -74,17 +74,17 @@ public:
   [[maybe_unused]] void
   ListSubscribers()
   {
-    for (const auto & [event, fun] : subscribers_) {
+    for (const auto & [event, fun] : m_subscribers) {
       spdlog::info(
           "EventSystem type: " + event + " subscribers " +
-          std::to_string(subscribers_[event].size()));
+          std::to_string(m_subscribers[event].size()));
     }
   }
 
 private:
 
   std::map<std::string, std::vector<std::function<void(const EnergyService &)>>>
-      subscribers_;
+      m_subscribers;
 };
 #endif // API_EVENT_SYSTEM_H_
 
