@@ -19,6 +19,7 @@ This implementation shall respect maximum software modularity and within Solid d
 - [ ] Software architecture integration scheme within Charge Point firmware
 - [ ] Functional unitary workflow specification list for testability purpose
 - [ ] Build system improvement by Cmake
+- [ ] Add conan packages dependencies manager 
 - [ ] CI build and test with Cmake workflow 
-- [ ] Package improvement by Cmake tooling
+- [ ] Software packaging improvement by Cmake tooling Cpack
 - [ ] Improve the code design or smells by dependencies inversion and SOLID principle 
