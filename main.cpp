@@ -1,3 +1,7 @@
+#include "api/EnergyServiceManagement.h"
+#include "api/ServicesDB.h"
+#include "api/event_system.h"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -156,6 +160,8 @@ public:
 };
 
 // Use case in main function
+// Just for test before cmake :clang++-14 -std=c++17 -Wall -pedantic -o main
+// main.cpp -lfmt
 int
 main()
 {
@@ -199,6 +205,15 @@ main()
       std::cout << "Interpolation failed." << '\n';
     }
   }
+
+  EventSystem events_system{};
+  EnergyServiceDB services_db{};
+
+  EnergyServiceManagement services_management{services_db, events_system};
+
+  services_management.RegisterNewService("FCR", EnergyServiceType::TSO);
+  services_management.ResetServiceTypeToDefault(
+      "aFRR", EnergyServiceType::DSO); // suppose FCR and TSO are default config
 
   return 0;
 }

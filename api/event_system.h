@@ -37,6 +37,18 @@ public:
     return m_name;
   }
 
+  void
+  setServiceName(std::string_view name)
+  {
+    m_name = name;
+  }
+
+  void
+  setServiceType(EnergyServiceType type)
+  {
+    m_serviceType = type;
+  }
+
   static void
   PrintEnergyService(const EnergyService & service)
   {
