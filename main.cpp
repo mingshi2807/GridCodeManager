@@ -1,6 +1,7 @@
 #include "api/EnergyServiceManagement.h"
 #include "api/ServicesDB.h"
 #include "api/event_system.h"
+#include "api/logListener.h"
 
 #include <filesystem>
 #include <fstream>
@@ -209,6 +210,7 @@ main()
   EventSystem events_system{};
   EnergyServiceDB services_db{};
 
+  SetupLogEventHandlers(events_system);
   EnergyServiceManagement services_management{services_db, events_system};
 
   services_management.RegisterNewService("FCR", EnergyServiceType::TSO);
