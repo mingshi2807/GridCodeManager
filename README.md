@@ -7,12 +7,13 @@ This implementation shall respect maximum software modularity and within Solid d
 
 
 # Todo list
-- [ ] Add Gabarit gauge utilities codes to generate grid code data stocked locally within csv formatting
-- [ ] Add unit test to confirm the accuracy convergence limit
+- [x] Add `Gabarit` gauge utilities codes to generate grid code data stocked locally within csv formatting
+- [x] Add unit test to confirm the accuracy convergence limit
 - [x] Add core grid code value / class layout design
-- [ ] Add some numerical math algebra support
+- [x] Add some numerical math algebra support
 - [ ] Add first time performance profiling support, thread safe improvement in future work
-- [ ] Add observer design to bidirectional notify the other entity caller/callee and forward the required input for next computing step
+- [ ] Add event driven (observer) design to notify grid code related event and required service toward to setpoint computing entity 
+- [ ] Add factory pattern to create abstracted grid service manager faced to downstream component 
 - [ ] Separate concerns of grid code type, criticality and associated energy services by strategy design pattern 
 - [ ] Mermaid UML functional sequence scheme
 - [ ] Simplified SUC logic charts
