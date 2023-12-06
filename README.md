@@ -12,15 +12,15 @@ This implementation shall respect maximum software modularity and within Solid d
 - [x] Add core grid code value / class layout design
 - [x] Add some numerical math algebra support
 - [ ] Add first time performance profiling support, thread safe improvement in future work
-- [ ] Add event driven (observer) design to notify grid code related event and required service toward to setpoint computing entity 
-- [ ] Add factory pattern to create abstracted grid service manager faced to downstream component 
+- [x] Add event driven (observer) design to notify grid code related event and required service toward to setpoint computing entity 
+- [ ] Add factory pattern to create abstracted grid service manager faced to up or downstream components (ex. metering, iEMS) 
 - [ ] Separate concerns of grid code type, criticality and associated energy services by strategy design pattern 
 - [ ] Mermaid UML functional sequence scheme
 - [ ] Simplified SUC logic charts
 - [ ] Software architecture integration scheme within Charge Point firmware
 - [ ] Functional unitary workflow specification list for testability purpose
-- [ ] Build system improvement by Cmake
-- [ ] Add conan packages dependencies manager 
+- [x] Build system improvement by Cmake
+- [x] Add conan packages dependencies manager 
 - [ ] CI build and test with Cmake workflow 
 - [ ] Software packaging improvement by Cmake tooling Cpack
 - [ ] Improve the code design or smells by dependencies inversion and SOLID principle 

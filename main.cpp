@@ -18,7 +18,8 @@ static constexpr char CSV_DELIM         = ';';
 static const char * const CSV_EXTENSION = ".csv";
 
 static constexpr double Freq_Measure =
-    50.5105217; // Simulate Siemens Q200 input / or Moving average (EMA) sample
+    50.5105217; // Simulate Siemens Q200 input / or Moving average (EMA) sampled
+                // in ROCOF window of 500ms
 
 // Type trait for checking if a type is arithmetic
 template <typename T>
