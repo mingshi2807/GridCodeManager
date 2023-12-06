@@ -1,16 +1,14 @@
-#include "api/EnergyServiceManagement.h"
-#include "api/ServicesDB.h"
-#include "api/event_system.h"
-#include "api/logListener.h"
+#include "EnergyServiceManagement.h"
+#include "GridCode.h"
+#include "event_system.h"
+#include "logListener.h"
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <type_traits>
 #include <vector>
 
@@ -20,7 +18,7 @@ static constexpr char CSV_DELIM         = ';';
 static const char * const CSV_EXTENSION = ".csv";
 
 static constexpr double Freq_Measure =
-    50.5105217; // Simulate Siemens Q200 input
+    50.5105217; // Simulate Siemens Q200 input / or Moving average (EMA) sample
 
 // Type trait for checking if a type is arithmetic
 template <typename T>
@@ -34,7 +32,7 @@ IsCSVFile(const fs::path & filespath)
          filespath.extension() == CSV_EXTENSION;
 }
 
-// CSV parsing using value semantics lambda function
+// CSV parsing
 template <typename T>
 [[nodiscard]] auto
 parseCSV(const std::string_view & filePath)
@@ -68,96 +66,6 @@ parseCSV(const std::string_view & filePath)
   }
 
   return data;
-};
-
-// Linear Interpolation Utility Class
-template <typename T>
-class LinearInterpolator
-{
-private:
-
-  const std::vector<T> m_freq;
-  const std::vector<T> m_power;
-
-public:
-
-  LinearInterpolator(
-      const std::vector<T> & xpoint, const std::vector<T> & ypoint)
-      : m_freq(xpoint)
-      , m_power(ypoint)
-  {}
-
-  [[nodiscard]] constexpr std::optional<T>
-  operator()(const T & f_measure) const
-  {
-    if (m_freq.size() != m_power.size() || m_power.empty()) {
-      // Invalid input data, return nullopt
-      return std::nullopt;
-    }
-
-    auto it = std::lower_bound(m_freq.begin(), m_freq.end(), f_measure);
-
-    if (it == m_freq.begin()) {
-      // f_measure is before the first point, return m_power[0]
-      return m_power[0];
-    }
-
-    if (it == m_freq.end()) {
-      // f_measure is after the last point, return m_power[n-1]
-      return m_power[m_power.size() - 1];
-    }
-
-    // Linear interpolation between it-1 and it
-    auto idx = static_cast<size_t>(std::distance(m_freq.begin(), it));
-    T x0     = m_freq[idx - 1];
-    T x1     = m_freq[idx];
-    T y0     = m_power[idx - 1];
-    T y1     = m_power[idx];
-
-    return y0 + (f_measure - x0) * (y1 - y0) / (x1 - x0);
-  }
-};
-
-// GridCode_LFSM class
-template <typename T>
-class GridCode_LFSM
-{
-private:
-
-  std::vector<std::tuple<std::optional<T>, std::optional<T>>> data;
-
-public:
-
-  explicit GridCode_LFSM(
-      std::vector<std::tuple<std::optional<T>, std::optional<T>>> && initData)
-      : data(std::move(initData))
-  {}
-
-  // Getter functions
-  [[nodiscard]] const auto &
-  getData() const
-  {
-    return data;
-  }
-
-  // Linear interpolation function
-  [[nodiscard]] std::optional<T>
-  interpolate(const T & x) const
-  {
-    // Extract x and y values for interpolation
-    std::vector<T> xValues;
-    std::vector<T> yValues;
-
-    for (const auto & entry : data) {
-      if (std::get<0>(entry).has_value() && std::get<1>(entry).has_value()) {
-        xValues.push_back(*std::get<0>(entry));
-        yValues.push_back(*std::get<1>(entry));
-      }
-    }
-
-    LinearInterpolator<T> interpolator(xValues, yValues);
-    return interpolator(x);
-  }
 };
 
 // Use case in main function
@@ -208,14 +116,16 @@ main()
   }
 
   EventSystem events_system{};
-  EnergyServiceDB services_db{};
-
   SetupLogEventHandlers(events_system);
+
+  EnergyServiceDB services_db{};
   EnergyServiceManagement services_management{services_db, events_system};
 
-  services_management.RegisterNewService("FCR", EnergyServiceType::TSO);
-  services_management.ResetServiceTypeToDefault(
-      "aFRR", EnergyServiceType::DSO); // suppose FCR and TSO are default config
+  services_management.RegisterNewService(
+      "FCR", gridcode::EnergyServiceType::TSO);
+  /* services_management.ResetServiceTypeToDefault( */
+  /*     "aFRR", EnergyServiceType::DSO); // suppose FCR and TSO are default
+   * config */
 
   return 0;
 }

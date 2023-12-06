@@ -1,67 +1,13 @@
-#ifndef API_EVENT_SYSTEM_H_
-#define API_EVENT_SYSTEM_H_
+#ifndef _API_EVENT_SYSTEM_H_
+#define _API_EVENT_SYSTEM_H_
+#include "service.h"
 #include "spdlog/spdlog.h"
 
 #include <functional>
-#include <iostream>
 #include <map>
 #include <string>
 #include <string_view>
 #include <vector>
-
-// Enum definition
-enum class EnergyServiceType
-{
-  TSO,
-  DSO
-};
-
-class EnergyService
-{
-public:
-
-  explicit EnergyService(std::string_view name, EnergyServiceType type)
-      : m_name{name}
-      , m_serviceType{type}
-  {}
-
-  [[nodiscard]] auto
-  getServiceType() const
-  {
-    return m_serviceType;
-  }
-
-  [[nodiscard]] auto
-  getServiceName() const
-  {
-    return m_name;
-  }
-
-  void
-  setServiceName(std::string_view name)
-  {
-    m_name = name;
-  }
-
-  void
-  setServiceType(EnergyServiceType type)
-  {
-    m_serviceType = type;
-  }
-
-  static void
-  PrintEnergyService(const EnergyService & service)
-  {
-    std::cout << "Service Name : " << service.getServiceName() << '\n';
-    std::cout << "Service Type : " << static_cast<int>(service.getServiceType())
-              << '\n';
-  }
-
-private:
-
-  std::string_view m_name; // FCR, aFRR, FFR, RST, RSCT
-  EnergyServiceType m_serviceType;
-};
 
 class EventSystem
 {
@@ -70,13 +16,15 @@ public:
   void
   Subscribe(
       std::string_view event_type,
-      const std::function<void(const EnergyService &)> & function)
+      const std::function<void(const gridcode::EnergyService &)> & function)
   {
     m_subscribers[event_type.data()].push_back(function);
   }
 
   void
-  PostEvent(std::string_view event_type, const EnergyService & energyService)
+  PostEvent(
+      std::string_view event_type,
+      const gridcode::EnergyService & energyService)
   {
     for (const auto & callable : m_subscribers[event_type.data()]) {
       callable(energyService);
@@ -95,27 +43,9 @@ public:
 
 private:
 
-  std::map<std::string, std::vector<std::function<void(const EnergyService &)>>>
+  std::map<
+      std::string,
+      std::vector<std::function<void(const gridcode::EnergyService &)>>>
       m_subscribers;
 };
-#endif // API_EVENT_SYSTEM_H_
-
-
-/* int */
-/* main() */
-/* { */
-/*   // Example usage */
-/*   EnergyService tsoService{"Transmission Service", EnergyServiceType::TSO};
- */
-/*   EnergyService dsoService("Distribution Service", EnergyServiceType::DSO);
- */
-/**/
-/*   // Print details using the internal function */
-/*   std::cout << "TSO Service Details:" << '\n'; */
-/*   EnergyService::PrintEnergyService(tsoService); */
-/**/
-/*   std::cout << "\nDSO Service Details:" << '\n'; */
-/*   EnergyService::PrintEnergyService(dsoService); */
-/**/
-/*   return 0; */
-/* } */
+#endif // _API_EVENT_SYSTEM_H_

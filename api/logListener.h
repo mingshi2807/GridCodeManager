@@ -2,35 +2,46 @@
 #ifndef API_LOG_LISTENER_H_
 #define API_LOG_LISTENER_H_
 #include "event_system.h"
-#include "spdlog/spdlog.h"
+#include "log.h"
+#include "service.h"
 
-#include <string>
-#include <string_view>
+#include <type_traits>
 
-
-static void
-Log_display(std::string_view message);
-
-void
-Log_display(std::string_view message)
+template <typename T>
+constexpr auto
+toUnderlying(T && t) noexcept
 {
-  // todos add fake applicative command
-  spdlog::info(std::string("[Log]: ") + std::string(message.data()));
+  return static_cast<std::underlying_type_t<T>>(std::forward<T>(t));
+}
+
+template <typename E>
+auto
+toEnumString(const E & e) -> std::string
+{
+  switch (e) {
+    case E::TSO:
+      return "TSO";
+    case E::DSO:
+      return "DSO";
+    default:
+      return "Unknown";
+  }
 }
 
 void
-HandleServiceRegisteredEventLog(const EnergyService & service)
+HandleServiceRegisteredEventLog(const gridcode::EnergyService & service)
 {
   Log_display(
       "Service has registered with name " +
       std::string(service.getServiceName()) + " and with type " +
-      std::to_string(static_cast<int>(service.getServiceType())));
+      toEnumString(service.getServiceType()));
+  /* std::to_string(toUnderlying(service.getServiceType()))); */
 }
 
 void
 SetupLogEventHandlers(EventSystem & events_system)
 {
   events_system.Subscribe(
-      "A energy service registered", HandleServiceRegisteredEventLog);
+      "service_registered", HandleServiceRegisteredEventLog);
 }
 #endif // API_LOG_LISTENER_H_

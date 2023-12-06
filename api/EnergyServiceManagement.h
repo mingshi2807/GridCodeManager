@@ -3,6 +3,7 @@
 #define API_ENERGYSERVICES_MANAGEMENT_H_
 #include "ServicesDB.h"
 #include "event_system.h"
+#include "service.h"
 
 class EnergyServiceManagement
 {
@@ -15,21 +16,23 @@ public:
   {}
 
   void
-  RegisterNewService(std::string_view name, EnergyServiceType type)
+  RegisterNewService(
+      const std::string_view name, const gridcode::EnergyServiceType & type)
   {
-    EnergyService a_service = m_database.Create_Service(name, type);
+    gridcode::EnergyService e_service = m_database.Create_Service(name, type);
 
-    m_event_system.PostEvent("An new energy service registered", a_service);
+    m_event_system.PostEvent("service_registered", e_service);
   }
 
   void
-  ResetServiceTypeToDefault(std::string_view name, EnergyServiceType type)
+  ResetServiceTypeToDefault(
+      std::string_view name, gridcode::EnergyServiceType type)
   {
     const auto found_service = m_database.FindService(name, type);
     if (found_service.has_value()) {
-      EnergyService a_service = found_service.value();
+      gridcode::EnergyService a_service = found_service.value();
       a_service.setServiceName("FCR");
-      a_service.setServiceType(EnergyServiceType::TSO);
+      a_service.setServiceType(gridcode::EnergyServiceType::TSO);
 
       m_event_system.PostEvent("Energy service resetted", a_service);
     }

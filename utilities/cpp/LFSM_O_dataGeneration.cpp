@@ -1,15 +1,19 @@
+#include <range/v3/all.hpp> //use range-v3 lib c++17
+
 #include <armadillo>
 #include <iostream>
 #include <ostream>
-#include <range/v3/all.hpp> //use range-v3 lib c++17
+
 /* #include <range/v3/view/zip.hpp> */
 
-std::pair<arma::vec, arma::vec> create_data(int n) {
+std::pair<arma::vec, arma::vec>
+create_data(int n)
+{
   const double xmax = 52.0;
-  const double s = 0.05;
-  const double fn = 50.0;
-  const double g = 1.0 / (s * fn);
-  const double f1 = 50.2;
+  const double s    = 0.05;
+  const double fn   = 50.0;
+  const double g    = 1.0 / (s * fn);
+  const double f1   = 50.2;
   const double Pmin = 0.6;
 
   arma::vec x = arma::linspace(50.0, xmax, n);
@@ -26,9 +30,8 @@ std::pair<arma::vec, arma::vec> create_data(int n) {
     /*   } */
     /* } */
 
-    auto mask = [&](double xi) {
-      return (xi > f1) ? 1.0 + g * (f1 - xi) : 1.0;
-    };
+    auto mask = [&](double xi)
+    { return (xi > f1) ? 1.0 + g * (f1 - xi) : 1.0; };
 
     auto result = ranges::views::zip_with(mask, x);
     ranges::copy(result, y.begin());
@@ -39,7 +42,8 @@ std::pair<arma::vec, arma::vec> create_data(int n) {
           "Linear variation cannot be confirmed for y < Pmin. Set y to a "
           "default value if no instruction");
     }
-  } catch (const std::runtime_error &e) {
+  }
+  catch (const std::runtime_error & e) {
     std::cerr << "Error: " << e.what() << std::endl;
     // Handle the error. For example: set y values to a default value
     /* y = ones(n); */
@@ -48,7 +52,9 @@ std::pair<arma::vec, arma::vec> create_data(int n) {
   return {x, y};
 }
 
-arma::uword find_index(const arma::vec &coll, double freq_measure) {
+arma::uword
+find_index(const arma::vec & coll, double freq_measure)
+{
   // Absolute differences between freq_measure and each element
   arma::vec abs_diff = arma::abs(coll - freq_measure);
 
@@ -58,9 +64,11 @@ arma::uword find_index(const arma::vec &coll, double freq_measure) {
   return index;
 }
 
-int main() {
+int
+main()
+{
 
-  const int n = 20;
+  const int n   = 20;
   auto [xt, yt] = create_data(n);
   const double fmeasure =
       50.5105217; // simulate mHz accuracy Siemens Q200 Power Analyzer measure
@@ -74,7 +82,7 @@ int main() {
   /* interp1(xt, yt, xfine, y1, "nearest"); */
   std::cout << "Y measured : " << y1(find_index(xfine, fmeasure)) << '\n';
 
-  for (const auto &[x_val, y_val] : ranges::views::zip(xt, yt)) {
+  for (const auto & [x_val, y_val] : ranges::views::zip(xt, yt)) {
     std::cout << "x: " << x_val << ", y: " << y_val << std::endl;
   }
   /* std::cout << "=====================" << std::endl; */
