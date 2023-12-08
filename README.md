@@ -23,6 +23,7 @@ This implementation shall respect maximum software modularity and within Solid d
 - [x] Add conan packages dependencies manager
 - [ ] CI build and test with Cmake workflow
 - [ ] Software packaging improvement by Cmake tooling Cpack
+- [ ] Compare or benchmark software packaging approach (Cpack, Devcontainer)
 - [ ] Improve the code design or smells by dependencies inversion and SOLID principle
 
 # Build
