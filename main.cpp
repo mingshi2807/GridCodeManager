@@ -2,6 +2,7 @@
 #include "GridCode.h"
 #include "event_system.h"
 #include "logListener.h"
+#include "measurement.h"
 
 #include <filesystem>
 #include <fstream>
@@ -69,6 +70,13 @@ parseCSV(const std::string_view & filePath)
   return data;
 };
 
+// Measurement interface test
+std::optional<double>
+MeasurementInterfaceTest(const MeasurementInterface & metering)
+{
+  return metering.getMeasurement();
+}
+
 // Use case in main function
 // Just for test before cmake :clang++-14 -std=c++17 -Wall -pedantic -o main
 // main.cpp -lfmt
@@ -105,6 +113,7 @@ main()
 
     // Example use case : interpolate a power value from freq input with high
     // sig figs
+
     auto interpolatedPower = firstInstance.interpolate(Freq_Measure);
 
     if (interpolatedPower.has_value()) {
@@ -128,5 +137,23 @@ main()
   /*     "aFRR", EnergyServiceType::DSO); // suppose FCR and TSO are default
    * config */
 
+  // Case 1: Instantiate with dnp3
+  DataAcquisition metering1{dnp3Measurement(Freq_Measure)};
+
+  // Case 2: Instantiate with modbus
+  DataAcquisition metering2{modbusMeasurement(Freq_Measure)};
+
+  std::optional<double> testdnpvalue = MeasurementInterfaceTest(metering1);
+  std::cout << "Test Value (Case dnp): "
+            << (testdnpvalue ? std::to_string(*testdnpvalue)
+                             : "Unsupported type")
+            << '\n';
+
+
+  std::optional<double> testmodbusvalue = MeasurementInterfaceTest(metering2);
+  std::cout << "Test Value (Case modbus): "
+            << (testmodbusvalue ? std::to_string(*testmodbusvalue)
+                                : "Unsupported type")
+            << '\n';
   return 0;
 }
