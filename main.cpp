@@ -1,5 +1,6 @@
 #include "EnergyServiceManagement.h"
 #include "GridCode.h"
+#include "emsListener.h"
 #include "event_system.h"
 #include "logListener.h"
 #include "measurement.h"
@@ -127,6 +128,7 @@ main()
 
   EventSystem events_system{};
   SetupLogEventHandlers(events_system);
+  SetupEmsEventHandlers(events_system);
 
   EnergyServiceDB services_db{};
   EnergyServiceManagement services_management{services_db, events_system};
