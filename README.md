@@ -7,17 +7,19 @@ This implementation shall respect maximum software modularity and within Solid d
 
 
 # Todo list
+- [x] Add local grid code config file extracted from Enedis V2G RfG requirement
 - [x] Add `Gabarit` gauge utilities codes to generate grid code data stocked locally within csv formatting
 - [x] Add unit test to confirm the accuracy convergence limit
 - [x] Add core grid code value / class layout design
 - [x] Add some numerical math algebra support
 - [ ] Add first time performance profiling support, thread safe improvement in future work
 - [x] Add event driven (observer) design to notify grid code related event and required service toward to setpoint computing entity
+- [ ] Add measurement acquisition interface
 - [ ] Add factory pattern to create abstracted grid service manager faced to up or downstream components (ex. metering, iEMS)
 - [ ] Separate concerns of grid code type, criticality and associated energy services by strategy design pattern
-- [ ] Mermaid UML functional sequence scheme
-- [ ] Simplified SUC logic charts
+- [x] Functional PlantUML SUC allocated modules and sequence workflow scheme
 - [ ] Software architecture integration scheme within Charge Point firmware
+- [ ] Software PlantUML integration guideline within OCPP 2.1 stack and DER control operating mode
 - [ ] Functional unitary workflow specification list for testability purpose
 - [x] Build system improvement by Cmake
 - [x] Add conan packages dependencies manager
