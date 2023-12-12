@@ -61,10 +61,10 @@ cmake --build build --config Debug
 ```
 Then, the binary file shall be this path : `/build/bin/`
 
-ps : we will improve this build procedure by env. variable in yaml file of our CI pipeline gitlab env.
+ps : we will improve this build procedure by env. variables in yaml file of our CI pipeline gitlab env.
 
 
 # Documentations
 
-### Functional AC V2C EVSE SUC sequence guideline
+### Functional AC V2G EVSE SUC sequence guideline
 ![SUC sequence](doc/SUC_AC_V2G_EVSE_Grid_Support.png)

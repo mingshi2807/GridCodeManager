@@ -1,8 +1,8 @@
-
 @startuml
-skin rose
 
 title Functional AC V2G EVSE SUC sequence guideline
+
+skin rose
 
 |Metering|
 start
@@ -12,6 +12,8 @@ start
     note right: EMA-configurable
     :Monitoring Enabled;
     note right: triphase I, V, P,\nQ, Freq, cosphi
+    |Grid Code Manager|
+    :measure interface;
 stop
 
 |Grid Code Manager|
@@ -69,7 +71,7 @@ note right: Immunity, LFSM,\nVoltage ride through
     :Drop Pmax setpoint computing;
     :step response timer;
     :service activation timer;
-
+note right #orange : intentional delay triggered
 |internal EMS|
 |#AntiqueWhite|internal EMS|
     :SetChargeProfileEmergencyGridCode;
@@ -79,6 +81,21 @@ note right #red : signal triggered to other layers \n(api, chargeBroker)
 |#White|Conductive Charge Manager|
     :iso15118 manager;
     :acknowledged by confirmed response;
-    :need also timer profiling feature;
+    :need also elapsed time profiling feature;
+    |Grid Code Manager|
+    :measure interface;
+    |Grid Service Manager|
+    :performance feedback timer check;
+    if(fstop) then (yes)
+    :Prepa Deactivation;
+    :Pmin holding;
+    :return back to nominal operating mode;
+    :Pmax recovered;
+note right #green : signal triggered to other layers \n(api, chargeBroker)
+    break
+    else (no)
+    :Probing and Setpoint should be updated;
+    endif
+    
 stop
 @enduml
