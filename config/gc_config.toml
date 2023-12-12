@@ -1,0 +1,49 @@
+[Unit]
+active_Pmax = "22kW"
+techno = "synchrone"
+emergency_mode = "frequency variation"
+# emergency_mode = "voltage variation"
+
+[Immunity] # rocof, todo : add voltage ride through
+frequency_range = "49 - 51Hz" 
+timerOpe1 = "0"
+frequency_range2 = "48.5 - 49Hz" || "47.5 - 48.5Hz" || "51 - 51.5"
+timerOpe2 = "1800s"
+time_recovery = "2s"
+rate_min = "1Hz/s"
+rate_max = "2Hz/S"
+window = "500ms"
+
+[LFSM]
+type = "LFSM-O"
+trigger_frequency = 50.2
+control_type = "linear"
+statism_range = "3% - 12%"
+default_statism = "5%"
+Intrinsic-delay = "2s"
+power_response = "45%"
+time_reponse = "8s" 
+time_out = "30s" # < or > induces power response limits with freq variation
+rate_min = "2%" # Pmax/Hz
+rate_max = "10%" # Pmax/Hz
+
+[Deactivation]
+Pmin = "5kW"
+f_stop = 50.1
+delay = "30s"
+Pmin_default = "60%"
+time_recovery = "360s"
+
+[Protetion]
+frequency_range = "51.5 - 55Hz"
+duration = "60s"
+
+[Intrinsic-limit]
+timeout = "2s"
+step_response = "30s"
+
+[Signal-processing]
+accuracy = "10%"
+window = "500ms"
+freq_resolution = "10mHz"
+moving_average_span = "60s"

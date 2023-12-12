@@ -1,0 +1,84 @@
+
+@startuml
+skin rose
+
+title Functional AC V2G EVSE SUC sequence guideline
+
+|Metering|
+start
+    :Low latency measure;
+    note right: dnp3 or modbus\niec61850-7 node
+    :Multi-time frame model;
+    note right: EMA-configurable
+    :Monitoring Enabled;
+    note right: triphase I, V, P,\nQ, Freq, cosphi
+stop
+
+|Grid Code Manager|
+start
+
+|#AntiqueWhite|Grid Code Manager|
+note : Enedis Local Parameter fetching
+repeat
+  :load grid code config;
+  :generate gabaris;
+repeat while (more local param?)
+
+note right: Immunity, LFSM,\nVoltage ride through
+
+	if (Concurrent ?) then (yes)
+	fork
+	:Measure traits;
+	fork again
+	:Timer traits;
+	fork again
+	:DSP;
+	end fork
+	else (monoinstruction)
+	:Measure;
+	:DSP;
+	:Timer;
+	endif
+	
+  :makeDecision;
+  if(Immunity or service) then (yes)
+      |Metering|
+          :Pmax holding;
+      if(threshould freq breakout) then (yes)
+        |Metering|
+          :Immunity timer triggered;
+          if(timeout) then (yes)
+          :Decoupling;
+          :CSM Actuator;
+          break
+          else (no)
+          :check service is required ?;
+          note right: if yes
+          endif
+      else (no)
+        |Metering|
+          :Probing;
+      break
+      endif
+  else (LFSM ex.)
+      |Grid Code Manager|
+          :FCR service enabling;
+  endif
+
+|Grid Service Manager|
+    :Drop Pmax setpoint computing;
+    :step response timer;
+    :service activation timer;
+
+|internal EMS|
+|#AntiqueWhite|internal EMS|
+    :SetChargeProfileEmergencyGridCode;
+    :SetChargeProfileMobilityNeeds Overloading;
+note right #red : signal triggered to other layers \n(api, chargeBroker)
+
+|#White|Conductive Charge Manager|
+    :iso15118 manager;
+    :acknowledged by confirmed response;
+    :need also timer profiling feature;
+stop
+@enduml
