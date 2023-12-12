@@ -18,8 +18,8 @@ This implementation shall respect maximum software modularity and within Solid d
 - [ ] Add factory pattern to create abstracted grid service manager faced to up or downstream components (ex. metering, iEMS)
 - [ ] Separate concerns of grid code type, criticality and associated energy services by strategy design pattern
 - [x] Functional PlantUML SUC allocated modules and sequence workflow scheme
-- [ ] Software architecture integration scheme within Charge Point firmware
-- [ ] Software PlantUML integration guideline within OCPP 2.1 stack and DER control operating mode
+- [x] Software architecture integration scheme within Charge Point firmware
+- [x] Software PlantUML integration guideline within OCPP 2.1 stack and DER control operating mode
 - [ ] Functional unitary workflow specification list for testability purpose
 - [x] Build system improvement by Cmake
 - [x] Add conan packages dependencies manager
@@ -65,6 +65,14 @@ ps : we will improve this build procedure by env. variables in yaml file of our 
 
 
 # Documentations
-
+&nbsp;
 ### Functional AC V2G EVSE SUC sequence guideline
 ![SUC sequence](doc/SUC_AC_V2G_EVSE_Grid_Support.png)
+&nbsp;
+&nbsp;
+### Software architecture integration guideline into Charge Point firmware
+![Soft architecture](doc/Arch_AC_V2G_EVSE_Grid_Support_v2.png)
+&nbsp;
+&nbsp;
+###  Integration guideline within OCPP 2.1 stack and DER control operating mode
+![ocpp der integration](doc/V2G_Req_InitialSetup.png)
