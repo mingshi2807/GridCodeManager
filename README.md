@@ -71,8 +71,8 @@ ps : we will improve this build procedure by env. variables in yaml file of our 
 &nbsp;
 &nbsp;
 ### Software architecture integration guideline into Charge Point firmware
-![Soft architecture](doc/Arch_AC_V2G_EVSE_Grid_Support_v2.png)
+![Soft architecture](doc/Arch_AC_V2G_EVSE_Grid_Support_v3.png)
 &nbsp;
 &nbsp;
-###  Integration guideline within OCPP 2.1 stack and DER control operating mode
+###  integration guideline within OCPP 2.1 stack and DER control operating mode
 ![ocpp der integration](doc/V2G_Req_InitialSetup.png)
