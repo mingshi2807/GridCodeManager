@@ -1,5 +1,6 @@
 #include "EnergyServiceManagement.h"
 #include "GridCode.h"
+#include "GridServicesManager.h"
 #include "emsListener.h"
 #include "event_system.h"
 #include "logListener.h"
@@ -157,5 +158,8 @@ main()
             << (testmodbusvalue ? std::to_string(*testmodbusvalue)
                                 : "Unsupported type")
             << '\n';
+
+  GridServiceManager manager = GridServiceManagerFactory::create();
+  manager.executeServices();
   return 0;
 }
